@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+@{
+    var isPost = Document.GetBool("IsPost") && !Document.GetBool("IsPostArchive");
+    var isPage = Document.GetBool("IsPage");
+}
+
+<head>
+    <meta charset="utf-8">
+    <title>@Document.GetString("PageTitle")</title>
+    @if (Document.ContainsKey(WebKeys.Description))
+    {
+        <meta name="description" content="@Document.GetString(WebKeys.Description)">
+    }
+    @if (Document.ContainsKey(WebKeys.Author))
+    {
+        <meta name="author" content="@Document.GetString(WebKeys.Author)">
+    }
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href='@Context.GetLink("/assets/resources/bootstrap/css/bootstrap.min.css")' rel="stylesheet">
+    <link href='@Context.GetLink("/assets/resources/font-awesome/css/font-awesome.min.css")' rel="stylesheet">
+    <link href='@Context.GetLink("/assets/resources/syntax/syntax.css")' rel="stylesheet">
+    <link href='@Context.GetLink("/assets/css/style.css")' rel="stylesheet">
+
+    <!-- Le fav and touch icons -->
+    <!-- Update these with your own images
+    <link rel="shortcut icon" href='@Context.GetLink("images/favicon.ico")'>
+    <link rel="apple-touch-icon" href='@Context.GetLink("images/apple-touch-icon.png")'>
+    <link rel="apple-touch-icon" sizes="72x72" href='@Context.GetLink("images/apple-touch-icon-72x72.png")'>
+    <link rel="apple-touch-icon" sizes="114x114" href='@Context.GetLink("images/apple-touch-icon-114x114.png")'>
+    -->
+
+    @{
+        @foreach (IDocument rssFeed in Outputs["**/*.rss"])
+        {
+            <link rel="alternate" type="application/rss+xml" rel="alternate" title="@rssFeed.GetString(WebKeys.Title)"
+                href="@rssFeed.GetLink()" />
+        }
+        @foreach (IDocument atomFeed in Outputs["**/*.atom"])
+        {
+            <link rel="alternate" type="application/atom+xml" rel="alternate" title="@atomFeed.GetString(WebKeys.Title)"
+                href="@atomFeed.GetLink()" />
+        }
+    }
+
+    @* TODO: More social graph meta tags *@
+    <meta property="og:title" content='@Document.GetString("PageTitle")' />
+    @if (Document.ContainsKey(WebKeys.Image))
+    {
+        <meta property="og:image" content='@Context.GetLink(Document.GetString(WebKeys.Image))' />
+    }
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content='@Document.GetLink(true)' />
+
+    @Html.Partial("_head")
+
+    @RenderSection("Head", false)
+
+</head>
+
+<body>
+    <!-- Navigation -->
+    @RenderSectionOrPartial("Navigation", "_navigation")
+
+    <!-- Sidebar -->
+    @RenderSectionOrPartial("Sidebar", "_sidebar")
+
+    <!-- Main Content -->
+    <div class="col-sm-9 col-sm-offset-3">
+        <div class="page-header">
+            <h1>{{ page.title }} {% if page.tagline %} <small>{{ page.tagline }}</small>{% endif %}</h1>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div id="content" class="col-md-12">
+                    @RenderBody()
+                    @if (isPost)
+                    {
+                        @Html.Partial("_post-after-content")
+                    }
+                    else if (isPage)
+                    {
+                        @Html.Partial("_page-after-content")
+                    }
+                    @Html.Partial("_common-after-content")
+                </div>
+            </div>
+            @if (isPost)
+            {
+                @Html.Partial("_post-comments")
+            }
+        </div>
+
+        <!-- Footer -->
+        @RenderSectionOrPartial("Footer", "_footer")
+
+    </div>
+
+    <!-- Scripts -->
+    <script type="text/javascript" src='@Context.GetLink("/assets/resources/jquery/jquery.min.js")'></script>
+    <script type="text/javascript" src='@Context.GetLink("/assets/resources/bootstrap/js/bootstrap.min.js")'></script>
+    <script type="text/javascript" src='@Context.GetLink("/assets/js/app.js")'></script>
+    @Html.Partial("_scripts")
+    @RenderSection("Scripts", false)
+
+</body>
+
+</html>

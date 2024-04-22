@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html>
 @{
     var isPost = Document.GetBool("IsPost") && !Document.GetBool("IsPostArchive");
     var isPage = Document.GetBool("IsPage");
 }
+
+<!DOCTYPE html>
+<html>
 
 <head>
     <meta charset="utf-8">
@@ -24,7 +25,6 @@
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
     <!-- Le styles -->
     <link href='@Context.GetLink("/assets/resources/bootstrap/css/bootstrap.min.css")' rel="stylesheet">
     <link href='@Context.GetLink("/assets/resources/font-awesome/css/font-awesome.min.css")' rel="stylesheet">
@@ -38,17 +38,16 @@
     <link rel="apple-touch-icon" sizes="72x72" href='@Context.GetLink("images/apple-touch-icon-72x72.png")'>
     <link rel="apple-touch-icon" sizes="114x114" href='@Context.GetLink("images/apple-touch-icon-114x114.png")'>
     -->
-
     @{
         @foreach (IDocument rssFeed in Outputs["**/*.rss"])
         {
             <link rel="alternate" type="application/rss+xml" rel="alternate" title="@rssFeed.GetString(WebKeys.Title)"
-                href="@rssFeed.GetLink()" />
+                  href="@rssFeed.GetLink()" />
         }
         @foreach (IDocument atomFeed in Outputs["**/*.atom"])
         {
             <link rel="alternate" type="application/atom+xml" rel="alternate" title="@atomFeed.GetString(WebKeys.Title)"
-                href="@atomFeed.GetLink()" />
+                  href="@atomFeed.GetLink()" />
         }
     }
 
@@ -77,7 +76,20 @@
     <!-- Main Content -->
     <div class="col-sm-9 col-sm-offset-3">
         <div class="page-header">
-            <h1>{{ page.title }} {% if page.tagline %} <small>{{ page.tagline }}</small>{% endif %}</h1>
+            <h1>
+                @if (Document.ContainsKey("Title"))
+                {
+                    @Document.GetString("Title")
+                }
+                else
+                {
+                    @Document.GetString("SiteTitle")
+                }
+                @if (Document.ContainsKey("TagLine"))
+                {
+                    <small>@Document.GetString("TagLine")</small>
+                }
+            </h1>
         </div>
 
         <div class="container">

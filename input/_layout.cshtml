@@ -4,7 +4,7 @@
 }
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -92,21 +92,17 @@
             </h1>
         </div>
 
-        <div class="container">
-            <div class="row">
-                <div id="content" class="col-md-12">
-                    @RenderBody()
-                    @if (isPost)
-                    {
-                        @Html.Partial("_post-after-content")
-                    }
-                    else if (isPage)
-                    {
-                        @Html.Partial("_page-after-content")
-                    }
-                    @Html.Partial("_common-after-content")
-                </div>
-            </div>
+        <div>
+            @RenderBody()
+            @if (isPost)
+            {
+                @Html.Partial("_post-after-content")
+            }
+            else if (isPage)
+            {
+                @Html.Partial("_page-after-content")
+            }
+            @Html.Partial("_common-after-content")
             @if (isPost)
             {
                 @Html.Partial("_post-comments")

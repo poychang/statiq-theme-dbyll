@@ -218,9 +218,6 @@ Replace or copy any of these Razor partials in your `input` folder to override s
 - `/_navigation.cshtml`: The navigation bar at the top every page.
 - `/_posts.cshtml`: Displays a set of posts stored in the children of a document passed as the partial model data.
 - `/_post.cshtml`: Displays an individual post inside a list of posts.
-- `/_post-after-content.cshtml`: Displays content at the bottom of a post, before comments.
-- `/_page-after-content.cshtml`: Displays content at the bottom of a static page.
-- `/_common-after-content.cshtml`: Displays content at the bottom of _any_ page. Included just after `/_post-after-content.cshtml` / `/_page-after-content.cshtml`.
 - `/_copyright.cshtml`: Displays a copyright attribution for the blog. By default, contains a paragraph with the `Copyright` setting.
 - `/_post-comments.cshtml`: Displays comments for a post.
 - `/_post-comments-{engine}.cshtml`: Displays the contents of the "comments" section of a post when the `CommentEngine` setting is equal, case-insensitively, to `{engine}`.
